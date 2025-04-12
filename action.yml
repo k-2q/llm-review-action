@@ -3,5 +3,5 @@ description: "Supports Gemini for now, need to provide API details in workflow"
 author: "Koushik Mondal"
 
 runs:
-  using: "node22"
+  using: "node20"
   main: "dist/index.js"

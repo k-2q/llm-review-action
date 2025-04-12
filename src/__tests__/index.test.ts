@@ -39,14 +39,6 @@ describe("run function", () => {
     );
   });
 
-  it("should log Hello World when triggered by a pull request", async () => {
-    // Arrange
-    context.payload.pull_request = { id: 123 } as any;
-
-    // Act
-    await run();
-  });
-
   it("should execute git diff and log output", async () => {
     // Arrange
     context.payload.pull_request = { id: 123 } as any;
@@ -64,6 +56,24 @@ describe("run function", () => {
       "git diff mock-fetch-head-parent mock-fetch-head",
       { encoding: "utf-8" }
     );
+  });
+
+  it("should call setFailed on error", async () => {
+    // Arrange
+    context.payload.pull_request = { id: 123 } as any;
+    process.env.FETCH_HEAD = "mock-fetch-head";
+    process.env.FETCH_HEAD_PARENT = "mock-fetch-head-parent";
+
+    const mockExecSync = execSync as jest.MockedFunction<typeof execSync>;
+    mockExecSync.mockImplementation(() => {
+      throw new Error("Mock error");
+    });
+
+    // Act
+    await run();
+
+    // Assert
+    expect(setFailed).toHaveBeenCalledWith("Mock error");
   });
 
   it("should call setFailed on error", async () => {

@@ -1,5 +1,6 @@
 import { setFailed } from "@actions/core";
 import { context } from "@actions/github";
+import { execSync } from "child_process";
 
 const run = async () => {
   const pullRequest = context.payload.pull_request;
@@ -15,7 +16,13 @@ const run = async () => {
     const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
 
     console.log(`FETCH_HEAD: ${fetchHead}`);
-    console.log(`FETCH_HEAD^: ${fetchHeadParent}`);
+    console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
+
+    const diffOutput = execSync(`git diff ${fetchHeadParent} ${fetchHead}`, {
+      encoding: "utf-8",
+    });
+    console.log("Git Diff Output:");
+    console.log(diffOutput);
   } catch (error) {
     setFailed((error as Error)?.message ?? "Unknown error");
   }

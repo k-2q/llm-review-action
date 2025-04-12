@@ -2,7 +2,7 @@ import { setFailed } from "@actions/core";
 import { context } from "@actions/github";
 import { execSync } from "child_process";
 
-const run = async () => {
+export const run = async () => {
   const pullRequest = context.payload.pull_request;
 
   try {

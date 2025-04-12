@@ -15,9 +15,6 @@ export const run = async () => {
     const fetchHead = process.env.FETCH_HEAD;
     const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
 
-    console.log(`FETCH_HEAD: ${fetchHead}`);
-    console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
-
     const diffOutput = execSync(`git diff ${fetchHeadParent} ${fetchHead}`, {
       encoding: "utf-8",
     });

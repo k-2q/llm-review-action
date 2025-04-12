@@ -28,4 +28,6 @@ export const run = async () => {
   }
 };
 
-run();
+if (!process.env.JESTWORKER_ID) {
+  run();
+}

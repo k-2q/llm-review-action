@@ -1,6 +1,44 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 1188:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.run = void 0;
+const core_1 = __nccwpck_require__(7484);
+const github_1 = __nccwpck_require__(3228);
+const child_process_1 = __nccwpck_require__(5317);
+const run = async () => {
+    var _a;
+    const pullRequest = github_1.context.payload.pull_request;
+    try {
+        if (!pullRequest) {
+            throw new Error("This action can only be run on Pull Requests.");
+        }
+        console.log("Hello World!");
+        const fetchHead = process.env.FETCH_HEAD;
+        const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
+        console.log(`FETCH_HEAD: ${fetchHead}`);
+        console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
+        const diffOutput = (0, child_process_1.execSync)(`git diff ${fetchHeadParent} ${fetchHead}`, {
+            encoding: "utf-8",
+        });
+        console.log("Git Diff Output:");
+        console.log(diffOutput);
+    }
+    catch (error) {
+        (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
+    }
+};
+exports.run = run;
+(0, exports.run)();
+
+
+/***/ }),
+
 /***/ 4914:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -31825,42 +31863,12 @@ module.exports = parseParams
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be in strict mode.
-(() => {
-"use strict";
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __nccwpck_require__(7484);
-const github_1 = __nccwpck_require__(3228);
-const child_process_1 = __nccwpck_require__(5317);
-const run = async () => {
-    var _a;
-    const pullRequest = github_1.context.payload.pull_request;
-    try {
-        if (!pullRequest) {
-            throw new Error("This action can only be run on Pull Requests.");
-        }
-        console.log("Hello World!");
-        const fetchHead = process.env.FETCH_HEAD;
-        const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
-        console.log(`FETCH_HEAD: ${fetchHead}`);
-        console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
-        const diffOutput = (0, child_process_1.execSync)(`git diff ${fetchHeadParent} ${fetchHead}`, {
-            encoding: "utf-8",
-        });
-        console.log("Git Diff Output:");
-        console.log(diffOutput);
-    }
-    catch (error) {
-        (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
-    }
-};
-run();
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(1188);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;

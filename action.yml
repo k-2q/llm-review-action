@@ -2,6 +2,14 @@ name: "Code review using LLM"
 description: "Supports Gemini for now, need to provide API details in workflow"
 author: "Koushik Mondal"
 
+inputs:
+  gh-token:
+    description: "The Github token for authentication."
+    required: true
+  code-change:
+    description: "Code changes for review."
+    required: true
+
 runs:
   using: "node20"
   main: "dist/index.js"

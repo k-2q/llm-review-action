@@ -133,3 +133,6 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Lib is for temp build after that ncc will build into dist folder
+lib

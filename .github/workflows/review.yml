@@ -1,11 +1,32 @@
 name: "Review"
 
 on:
-  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   review:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Fetch PR merge ref
+        run: |
+          git fetch origin refs/pull/${{ github.event.pull_request.number }}/merge
+
+      - name: Set FETCH_HEAD references
+        id: set-fetch-head
+        run: |
+          echo "FETCH_HEAD=$(git rev-parse FETCH_HEAD)" >> $GITHUB_ENV
+          echo "FETCH_HEAD_PARENT=$(git rev-parse FETCH_HEAD^)" >> $GITHUB_ENV
+
       - uses: ./
+        env:
+          FETCH_HEAD: ${{ env.FETCH_HEAD }}
+          FETCH_HEAD_PARENT: ${{ env.FETCH_HEAD_PARENT }}
+        with:
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
+          code-change:

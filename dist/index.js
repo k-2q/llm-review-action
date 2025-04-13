@@ -37,7 +37,7 @@ const run = async () => {
         const repo = repository === null || repository === void 0 ? void 0 : repository.name;
         const pullNumber = pullRequest.number;
         console.log("Owner: ", owner);
-        if (!(owner === null || owner === void 0 ? void 0 : owner.name) || !repo) {
+        if (!(owner === null || owner === void 0 ? void 0 : owner.login) || !repo) {
             throw new Error("Owner and repository not found.");
         }
         const commitId = (0, child_process_1.execSync)("git rev-parse HEAD").toString().trim();
@@ -46,7 +46,7 @@ const run = async () => {
             auth: ghToken,
         });
         const response = await octokitRest.pulls.get({
-            owner: owner.name,
+            owner: owner.login,
             repo: repo,
             pull_number: pullNumber,
         });

@@ -35,7 +35,7 @@ export const run = async () => {
 
     console.log("Owner: ", owner);
 
-    if (!owner?.name || !repo) {
+    if (!owner?.login || !repo) {
       throw new Error("Owner and repository not found.");
     }
 
@@ -47,7 +47,7 @@ export const run = async () => {
     });
 
     const response = await octokitRest.pulls.get({
-      owner: owner.name,
+      owner: owner.login,
       repo: repo,
       pull_number: pullNumber,
     });

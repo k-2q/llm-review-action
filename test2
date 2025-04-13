@@ -1,0 +1,11 @@
+const regex = /(?:^|\s)b\/(.+)/;
+      const firstLine = change.split("\n")[0];
+      const match = regex.exec(firstLine);
+
+      if (!match) {
+        throw new Error("Unable to parse file path.");
+      }
+
+      const filePath = match[1];
+
+      console.log(filePath);

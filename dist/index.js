@@ -14,27 +14,53 @@ const child_process_1 = __nccwpck_require__(5317);
 const run = async () => {
     var _a;
     const pullRequest = github_1.context.payload.pull_request;
+    const repository = github_1.context.payload.repository;
     try {
         if (!pullRequest) {
             throw new Error("This action can only be run on Pull Requests.");
         }
         console.log("Hello World!");
+        const ghToken = process.env.GITHUB_TOKEN;
         const fetchHead = process.env.FETCH_HEAD;
         const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
-        console.log(`FETCH_HEAD: ${fetchHead}`);
-        console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
         const diffOutput = (0, child_process_1.execSync)(`git diff ${fetchHeadParent} ${fetchHead}`, {
             encoding: "utf-8",
         });
-        console.log("Git Diff Output:");
-        console.log(diffOutput);
+        const changes = diffOutput.split("diff --git");
+        if (!ghToken) {
+            throw new Error("Token is required.");
+        }
+        const octokit = (0, github_1.getOctokit)(ghToken);
+        const owner = "k-2q";
+        const repo = repository === null || repository === void 0 ? void 0 : repository.name;
+        const pullNumber = pullRequest.number;
+        await octokit.request(`POST /repos/${owner}/${repo}/pulls/${pullNumber}/comments`, {
+            owner: owner,
+            repo: repo,
+            pull_number: pullNumber,
+            body: "Great stuff! This is a test comment.",
+            commit_id: "ba2c4b4a93112756efe85c6357f329b609ebee0f",
+            path: "a/src/__tests__/index.test.ts b/src/__tests__/index.test.ts",
+            start_line: 1,
+            start_side: "RIGHT",
+            line: 2,
+            side: "RIGHT",
+            headers: {
+                "X-GitHub-Api-Version": "2022-11-28",
+            },
+        });
+        changes.forEach((change) => {
+            console.log(change);
+        });
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
     }
 };
 exports.run = run;
-(0, exports.run)();
+if (!process.env.JESTWORKER_ID) {
+    (0, exports.run)();
+}
 
 
 /***/ }),

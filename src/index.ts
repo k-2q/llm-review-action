@@ -28,9 +28,12 @@ export const run = async () => {
       throw new Error("Token is required.");
     }
     const octokit = getOctokit(ghToken);
-    const owner = "k-2q";
+    const owner = repository?.owner;
     const repo = repository?.name;
     const pullNumber = pullRequest.number;
+
+    const commitId = execSync("git rev-parse HEAD").toString().trim();
+    console.log("Current commit ID:", commitId);
 
     await octokit.request(
       `POST /repos/${owner}/${repo}/pulls/${pullNumber}/comments`,
@@ -39,7 +42,7 @@ export const run = async () => {
         repo: repo,
         pull_number: pullNumber,
         body: "Great stuff! This is a test comment.",
-        commit_id: "090e897ebde4edc4df2e8097e83c769194154c66",
+        commit_id: commitId,
         path: "test",
         line: 1,
         side: "RIGHT",

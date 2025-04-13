@@ -36,6 +36,7 @@ const run = async () => {
         const owner = repository === null || repository === void 0 ? void 0 : repository.owner;
         const repo = repository === null || repository === void 0 ? void 0 : repository.name;
         const pullNumber = pullRequest.number;
+        console.log("Owner: ", owner);
         if (!(owner === null || owner === void 0 ? void 0 : owner.name) || !repo) {
             throw new Error("Owner and repository not found.");
         }

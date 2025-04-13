@@ -33,6 +33,8 @@ export const run = async () => {
     const repo = repository?.name;
     const pullNumber = pullRequest.number;
 
+    console.log("Owner: ", owner);
+
     if (!owner?.name || !repo) {
       throw new Error("Owner and repository not found.");
     }

@@ -40,28 +40,28 @@ export const run = async () => {
     const commitId = execSync("git rev-parse HEAD").toString().trim();
     console.log("Current commit ID:", commitId);
 
-    // const octokitRest = new Octokit({
-    //   auth: ghToken,
-    // });
+    const octokitRest = new Octokit({
+      auth: ghToken,
+    });
 
-    // const response = await octokitRest.pulls.get({
-    //   owner: owner.login,
-    //   repo: repo,
-    //   pull_number: pullNumber,
-    // });
+    const response = await octokitRest.pulls.get({
+      owner: owner.login,
+      repo: repo,
+      pull_number: pullNumber,
+    });
 
-    // // Extract the head commit SHA from the response
-    // const headCommitSHA = response.data.head.sha;
-    // console.log("Head Commit SHA:", headCommitSHA);
+    // Extract the head commit SHA from the response
+    const headCommitSHA = response.data.head.sha;
+    console.log("Head Commit SHA:", headCommitSHA);
 
     await octokit.request(
-      `POST /repos/${owner}/${repo}/pulls/${pullNumber}/comments`,
+      `POST /repos/${owner.login}/${repo}/pulls/${pullNumber}/comments`,
       {
         owner: owner,
         repo: repo,
         pull_number: pullNumber,
         body: "Great stuff! This is a test comment.",
-        commit_id: "9307a27621d47209b11ff8faaf7e3817026815ce",
+        commit_id: headCommitSHA,
         path: "test",
         line: 1,
         side: "RIGHT",

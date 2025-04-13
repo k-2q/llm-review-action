@@ -1,6 +1,9 @@
 name: "Code review using LLM"
-description: "Supports Gemini for now, need to provide API details in workflow"
+description: "Github action for code review using LLM. Supports Gemini for now, add GEMINI_API_KEY in secrets."
 author: "Koushik Mondal"
+branding:
+  icon: "airplay"
+  color: "orange"
 
 inputs:
   gh-token:

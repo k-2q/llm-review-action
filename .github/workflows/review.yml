@@ -28,6 +28,7 @@ jobs:
 
       - uses: ./
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FETCH_HEAD: ${{ env.FETCH_HEAD }}
           FETCH_HEAD_PARENT: ${{ env.FETCH_HEAD_PARENT }}
         with:

@@ -1,0 +1,67 @@
+diff --git a/src/__tests__/index.test.ts b/src/__tests__/index.test.ts
+index 5ca35af..08a7b85 100644
+--- a/src/__tests__/index.test.ts
++++ b/src/__tests__/index.test.ts
+@@ -39,31 +39,41 @@ describe("run function", () => {
+     );
+   });
+ 
+-  it("should log Hello World when triggered by a pull request", async () => {
++  it("should execute git diff and log output", async () => {
+     // Arrange
+     context.payload.pull_request = { id: 123 } as any;
++    process.env.FETCH_HEAD = "mock-fetch-head";
++    process.env.FETCH_HEAD_PARENT = "mock-fetch-head-parent";
++
++    const mockExecSync = execSync as jest.MockedFunction<typeof execSync>;
++    mockExecSync.mockReturnValue("Mock git diff output");
+ 
+     // Act
+     await run();
++
++    // Assert
++    expect(mockExecSync).toHaveBeenCalledWith(
++      "git diff mock-fetch-head-parent mock-fetch-head",
++      { encoding: "utf-8" }
++    );
+   });
+ 
+-  it("should execute git diff and log output", async () => {
++  it("should call setFailed on error", async () => {
+     // Arrange
+     context.payload.pull_request = { id: 123 } as any;
+     process.env.FETCH_HEAD = "mock-fetch-head";
+     process.env.FETCH_HEAD_PARENT = "mock-fetch-head-parent";
+ 
+     const mockExecSync = execSync as jest.MockedFunction<typeof execSync>;
+-    mockExecSync.mockReturnValue("Mock git diff output");
++    mockExecSync.mockImplementation(() => {
++      throw new Error("Mock error");
++    });
+ 
+     // Act
+     await run();
+ 
+     // Assert
+-    expect(mockExecSync).toHaveBeenCalledWith(
+-      "git diff mock-fetch-head-parent mock-fetch-head",
+-      { encoding: "utf-8" }
+-    );
++    expect(setFailed).toHaveBeenCalledWith("Mock error");
+   });
+ 
+   it("should call setFailed on error", async () => {
+diff --git a/src/index.ts b/src/index.ts
+index ebf7ba6..15eced0 100644
+--- a/src/index.ts
++++ b/src/index.ts
+@@ -15,9 +15,6 @@ export const run = async () => {
+     const fetchHead = process.env.FETCH_HEAD;
+     const fetchHeadParent = process.env.FETCH_HEAD_PARENT;
+ 
+-    console.log(`FETCH_HEAD: ${fetchHead}`);
+-    console.log(`FETCH_HEAD_PARENT: ${fetchHeadParent}`);
+-
+     const diffOutput = execSync(`git diff ${fetchHeadParent} ${fetchHead}`, {
+       encoding: "utf-8",
+     });

@@ -58,7 +58,7 @@ const run = async () => {
             pull_number: pullNumber,
             body: "Great stuff! This is a test comment.",
             commit_id: headCommitSHA,
-            path: "test",
+            path: "test1",
             line: 1,
             side: "RIGHT",
             position: 1,

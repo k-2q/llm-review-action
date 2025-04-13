@@ -42,7 +42,7 @@ const run = async () => {
         const commitId = (0, child_process_1.execSync)("git rev-parse HEAD").toString().trim();
         console.log("Current commit ID:", commitId);
         const octokitRest = new rest_1.Octokit({
-            auth: "YOUR_PERSONAL_ACCESS_TOKEN",
+            auth: ghToken,
         });
         const response = await octokitRest.pulls.get({
             owner: owner.name,

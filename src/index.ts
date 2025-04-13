@@ -41,7 +41,7 @@ export const run = async () => {
     console.log("Current commit ID:", commitId);
 
     const octokitRest = new Octokit({
-      auth: "YOUR_PERSONAL_ACCESS_TOKEN",
+      auth: ghToken,
     });
 
     const response = await octokitRest.pulls.get({

@@ -118,7 +118,7 @@ const run = async () => {
             for (const response of responses) {
                 console.log(response);
                 const body = `${response.potentialIssue &&
-                    "**Potential Issue: ** \n " + response.potentialIssue} ${response.suggestion && "**Suggestion: ** \n " + response.suggestion}`;
+                    "<b>Potential Issue: <b> \n " + response.potentialIssue} \n ${response.suggestion && "<b>Suggestion: <b> \n " + response.suggestion}`;
                 addComment(filePath, response.lineStart, body);
             }
         }

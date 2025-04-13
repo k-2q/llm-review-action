@@ -146,9 +146,9 @@ export const run = async () => {
         console.log(response);
         const body = `${
           response.potentialIssue &&
-          "<b>Potential Issue: <b> \n " + response.potentialIssue
-        } \n ${
-          response.suggestion && "<b>Suggestion: <b> \n " + response.suggestion
+          "<b>Potential Issue: </b> \n " + response.potentialIssue
+        } \n\n ${
+          response.suggestion && "<b>Suggestion: </b> \n " + response.suggestion
         }`;
         addComment(filePath, response.lineStart, body);
       }

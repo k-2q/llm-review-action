@@ -33,8 +33,6 @@ export const run = async () => {
     const repo = repository?.name;
     const pullNumber = pullRequest.number;
 
-    console.log("Owner: ", owner);
-
     if (!owner?.login || !repo) {
       throw new Error("Owner and repository not found.");
     }
@@ -63,7 +61,7 @@ export const run = async () => {
         repo: repo,
         pull_number: pullNumber,
         body: "Great stuff! This is a test comment.",
-        commit_id: headCommitSHA,
+        commit_id: "9307a27621d47209b11ff8faaf7e3817026815ce",
         path: "test",
         line: 1,
         side: "RIGHT",

@@ -9,13 +9,33 @@ import { readFile } from "fs/promises";
 jest.mock("@actions/core", () => ({
   setFailed: jest.fn(),
 }));
+jest.mock("@octokit/rest", () => ({
+  Octokit: jest.fn().mockImplementation(() => ({
+    pulls: {
+      get: jest.fn<any>().mockResolvedValue({
+        data: {
+          head: {
+            sha: "mocked-sha-123456", // Mocked SHA value
+          },
+        },
+      }),
+    },
+  })),
+}));
 
 jest.mock("@actions/github", () => ({
   context: {
     payload: {
       pull_request: null,
+      repository: {
+        owner: {
+          login: "ow",
+        },
+        name: "repo",
+      },
     },
   },
+  getOctokit: jest.fn(),
 }));
 
 jest.mock("child_process", () => ({
@@ -30,6 +50,7 @@ describe("run function", () => {
   it("should execute git diff and log output", async () => {
     // Arrange
     context.payload.pull_request = { id: 123 } as any;
+    process.env.GITHUB_TOKEN = "mock-gh-token";
     process.env.FETCH_HEAD = "mock-fetch-head";
     process.env.FETCH_HEAD_PARENT = "mock-fetch-head-parent";
 

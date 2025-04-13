@@ -41,8 +41,6 @@ export const run = async () => {
         body: "Great stuff! This is a test comment.",
         commit_id: "090e897ebde4edc4df2e8097e83c769194154c66",
         path: "test",
-        start_line: 1,
-        start_side: "RIGHT",
         line: 1,
         side: "RIGHT",
         position: 1,

@@ -26,6 +26,7 @@ const run = async () => {
         const diffOutput = (0, child_process_1.execSync)(`git diff ${fetchHeadParent} ${fetchHead}`, {
             encoding: "utf-8",
         });
+        console.log("Diff: ", diffOutput);
         const changes = diffOutput.split("diff --git");
         if (!ghToken) {
             throw new Error("Token is required.");
@@ -40,7 +41,7 @@ const run = async () => {
             pull_number: pullNumber,
             body: "Great stuff! This is a test comment.",
             commit_id: "090e897ebde4edc4df2e8097e83c769194154c66",
-            path: "a/test",
+            path: "test",
             start_line: 1,
             start_side: "RIGHT",
             line: 1,

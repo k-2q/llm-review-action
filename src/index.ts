@@ -1,5 +1,6 @@
 import { setFailed } from "@actions/core";
 import { context, getOctokit } from "@actions/github";
+import { Octokit } from "@octokit/rest";
 import { execSync } from "child_process";
 
 export const run = async () => {
@@ -32,8 +33,26 @@ export const run = async () => {
     const repo = repository?.name;
     const pullNumber = pullRequest.number;
 
+    if (!owner?.name || !repo) {
+      throw new Error("Owner and repository not found.");
+    }
+
     const commitId = execSync("git rev-parse HEAD").toString().trim();
     console.log("Current commit ID:", commitId);
+
+    const octokitRest = new Octokit({
+      auth: "YOUR_PERSONAL_ACCESS_TOKEN",
+    });
+
+    const response = await octokitRest.pulls.get({
+      owner: owner.name,
+      repo: repo,
+      pull_number: pullNumber,
+    });
+
+    // Extract the head commit SHA from the response
+    const headCommitSHA = response.data.head.sha;
+    console.log("Head Commit SHA:", headCommitSHA);
 
     await octokit.request(
       `POST /repos/${owner}/${repo}/pulls/${pullNumber}/comments`,
@@ -42,7 +61,7 @@ export const run = async () => {
         repo: repo,
         pull_number: pullNumber,
         body: "Great stuff! This is a test comment.",
-        commit_id: commitId,
+        commit_id: headCommitSHA,
         path: "test",
         line: 1,
         side: "RIGHT",

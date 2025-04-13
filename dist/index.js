@@ -45,6 +45,7 @@ const run = async () => {
             start_side: "RIGHT",
             line: 2,
             side: "RIGHT",
+            position: 5,
             headers: {
                 "X-GitHub-Api-Version": "2022-11-28",
             },

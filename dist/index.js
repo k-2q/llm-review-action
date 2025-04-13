@@ -70,7 +70,6 @@ const run = async () => {
                 throw new Error("Unable to parse file path.");
             }
             const filePath = match[1];
-            console.log(filePath);
             // Gemini review
             const res = await ai.models.generateContent({
                 model: "gemini-2.0-flash",
@@ -117,8 +116,11 @@ const run = async () => {
             const responses = await JSON.parse(res.text);
             for (const response of responses) {
                 console.log(response);
-                const body = `${response.potentialIssue &&
-                    "<b>Potential Issue: </b> \n " + response.potentialIssue} \n\n ${response.suggestion && "<b>Suggestion: </b> \n " + response.suggestion}`;
+                const body = `${response.potentialIssue
+                    ? "<b>Potential Issue: </b> \n " + response.potentialIssue
+                    : ""} \n\n ${response.suggestion
+                    ? "<b>Suggestion: </b> \n " + response.suggestion
+                    : ""}`;
                 addComment(filePath, response.lineStart, body);
             }
         }

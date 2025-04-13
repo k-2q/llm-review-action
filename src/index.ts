@@ -91,8 +91,6 @@ export const run = async () => {
 
       const filePath = match[1];
 
-      console.log(filePath);
-
       // Gemini review
       const res = await ai.models.generateContent({
         model: "gemini-2.0-flash",
@@ -144,11 +142,15 @@ export const run = async () => {
 
       for (const response of responses) {
         console.log(response);
+
         const body = `${
-          response.potentialIssue &&
-          "<b>Potential Issue: </b> \n " + response.potentialIssue
+          response.potentialIssue
+            ? "<b>Potential Issue: </b> \n " + response.potentialIssue
+            : ""
         } \n\n ${
-          response.suggestion && "<b>Suggestion: </b> \n " + response.suggestion
+          response.suggestion
+            ? "<b>Suggestion: </b> \n " + response.suggestion
+            : ""
         }`;
         addComment(filePath, response.lineStart, body);
       }

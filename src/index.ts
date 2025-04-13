@@ -76,7 +76,9 @@ export const run = async () => {
     for (const change of changes) {
       if (!change) continue;
 
-      console.log("...................................", "\n");
+      console.log("...................................");
+      console.log(change);
+      console.log("...................................");
 
       // Match the file name after b/
       const regex = /(?:^|\s)b\/(.+)/;
@@ -144,11 +146,9 @@ export const run = async () => {
         console.log(response);
         const body = `${
           response.potentialIssue &&
-          "<b>Potential Issue: </b> \n" + response.potentialIssue + "\n"
+          "**Potential Issue: ** \n" + response.potentialIssue + "\n"
         }
-        ${
-          response.suggestion && "<b>Suggestion: </b> \n" + response.suggestion
-        }`;
+        ${response.suggestion && "**Suggestion: ** \n" + response.suggestion}`;
         addComment(filePath, response.lineStart, body);
       }
     }
